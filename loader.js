@@ -15,8 +15,12 @@ submit.addEventListener('click', (event) => {
     var tBody = document.getElementById(`${tableName}Body`)
     var rows = tables[i].match(/t\..*[^\n]*/g)
     console.log(rows)
-    for (var i = 0; i <= rows.length - 1; i++) {
-      tBody.insertAdjacentHTML('beforeend', row(rows[i]))
+    for (var j = 0; j <= rows.length - 1; j++) {
+      if (rows[j].substr(0,7) !== 't.index') {
+        tBody.insertAdjacentHTML('beforeend', row(rows[j]));
+      } else {
+        createIndex(rows[j]);
+      };
     }
   };
 });
@@ -28,9 +32,14 @@ const findTables = (schema) => {
 };
 
 const table = (name) => {
-  return `<table id='${name}'>\
+  return `<table class='draggable' id='${name}'>\
             ${tableHead(name)}\
-            <tbody id='${name}Body'>
+            <tbody id='${name}Body'>\
+              <tr class='integer'>\
+                <td>\
+                  id
+                </td>\
+              </tr>\
             </tbody>\
           </table>`;
 };
@@ -54,4 +63,19 @@ const tableHead = (name) => {
               </th>\
             </tr>\
           </thead>`
+};
+
+const createIndex = (row) => {
+
+};
+
+const pdfGenerator = () => {
+  var doc = new jsPDF({
+    orientation: 'landscape',
+    unit: 'in',
+    format: [4, 2]
+  })
+
+  doc.text('Hello world!', 1, 1)
+  doc.save('two-by-four.pdf')
 };
